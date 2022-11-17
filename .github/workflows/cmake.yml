@@ -10,7 +10,13 @@ env:
 
 jobs:
   build:
-    runs-on: docker.io/egerv/programming_technologies:0.1
+    #runs-on: docker.io/egerv/programming_technologies:0.1
+    runs-on: ubuntu-latest
+    container:
+      image: docker.io/egerv/programming_technologies:0.1
+      credentials:
+        username: egerv
+        password: ${{ secrets.DOCKER_CONTAINER_REGISTRY_TOKEN }}
 
     steps:
     - uses: actions/checkout@v3
@@ -23,3 +29,6 @@ jobs:
     - name: Build
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
+    - name: Run
+      run: ${{github.workspace}}/build/main
